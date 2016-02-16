@@ -123,8 +123,9 @@ pre > code
 
     <section>
       <h2>Destructors</h2>
-      <p>If you're not familiar with destructors, they're a function that
-      is automatically run when a variable goes out of scope.</p>
+      <p>If you're not familiar with destructors, they're a function
+      that is automatically run when a variable goes out of scope and is
+      to be deleted.</p>
       <p class="fragment">Even if there is an exception.</p>
       <p class="fragment">This is a very powerful concept.</p>
     </section>
@@ -135,6 +136,9 @@ pre > code
         <dt>RAII</dt>
         <dd>Resource Acquisition Is Initialization</dd>
       </dl>
+      <p class="fragment">It's a crap name.</p>
+      <p class="fragment">Mostly a <tt>C++</tt> pattern since C++ is one of the few
+      languages to have a destructor.</p>
     </section>
 
     <section>
@@ -146,7 +150,7 @@ pre > code
     </section>
 
     <section>
-        <h2>Naive way of opening a file in C/C++</h2>
+        <h2>Naive way of opening a file in C</h2>
 
         <section data-transition='none'>
           <pre><code data-trim class="language-cpp">
@@ -199,9 +203,11 @@ if( f != NULL )
 
         <pre><code data-trim class="language-python">
 f = open("some_file.txt","r")
-# read the file and do stuff
+f.read()
 close(f)
         </code></pre>
+
+      <p class="fragment">It looks a lot like the C version.</p>
     </section>
     
     <section>
@@ -210,21 +216,138 @@ close(f)
         <pre><code data-trim class="language-python">
 try:
   f = open("some_file.txt","r")
-  # read the file and do stuff
+  f.read()
 finally:
   close(f)
         </code></pre>
+
+      <p class="fragment">This is actually totally safe but verbose
+      and hard to read.</p>
     </section>
+
     <section>
         <h2>Awesome Pythonic way of opening a file</h2>
 
         <pre><code data-trim class="language-python">
 with open("some_file.txt","r") as f:
-  # read the file and do stuff
-  # throw an exception, we don't care, close(f) will get called
+  f.read()
+  # or throw an exception, we don't care
+  # close(f) will get called
         </code></pre>
     </section>
 
+    <section>
+        <h2>Lock Example</h2>
+
+        <p>Anybody who's every done multithreaded code knows you need
+        to use locks/mutex/semaphores/critical sections/etc</p>
+
+        <p class="fragment">Hopefully you also know that you have to unlock your mutex
+        when you're done.</p>
+    </section>
+
+    <section>
+        <h2>Lock Example - Lame and unsafe</h2>
+
+        <pre class="fragment"><code data-trim class="language-python">
+from threading import Lock
+mutex = Lock()
+
+mutex.acquire()
+print "is locked: ", mutex.locked()
+mutex.release()
+print "is locked: ", mutex.locked()
+        </code></pre>
+
+        <pre class="fragment"><code data-trim class="text">
+is locked:  True
+is locked:  False
+        </code></pre>
+    </section>
+
+
+    <section>
+        <h2>Lock Example - How the cool kids do it</h2>
+
+        <pre class="fragment"><code data-trim class="language-python">
+from threading import Lock
+mutex = Lock()
+
+with mutex:
+  print "is locked: ", mutex.locked()
+
+print "is locked: ", mutex.locked()
+        </code></pre>
+
+        <pre class="fragment"><code data-trim class="text">
+is locked:  True
+is locked:  False
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Behold the awesome might of Context Managers!</h2>
+
+        <p class="fragment">function is too big and ugly to fit here</p>
+    </section>
+
+    <section>
+        <h2>You can write your own custom Context Managers</h2>
+
+        <p class="fragment">Two methods...</p>
+        <ul>
+          <li class="fragment">decorators - for simple cases</li>
+          <li class="fragment">classes - for more advanced cases</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Decorator method</h2>
+
+        <pre><code data-trim class="language-python">
+from contextlib import contextmanager
+
+@contextmanager
+def custom_ctx_mgr(*args, **kwargs):
+  # setup code
+  yield # can return something if desired
+  # cleanup code
+        </code></pre>
+
+    </section>
+
+    <section>
+        <h2>Class method</h2>
+
+        <pre><code data-trim class="language-python">
+class custom_ctx_mgr(object):
+
+    def __init__(self, *args, **kwargs):
+        """
+        this is a normal object and can take initialization parameters
+        """
+
+    def __enter__(self):
+        """
+        the value returned by this method is bound to the `as` variable
+        """
+        return self # or other object or nothing
+
+    def __exit__( self, exc_type, exc_val, exc_traceback):
+        """
+        return True to cause caller to continue happily
+        return False to cause caller to reraise passed in exception
+        """
+        </code></pre>
+
+    </section>
+
+    <section>
+        <h2>Context Managers...</h2>
+
+        <p class="fragment">To know them is to love them.</p>
+        <p class="fragment">To love them is to know them.</p>
+    </section>
     </div><!-- slides -->
 
 </div!-- reveal -->

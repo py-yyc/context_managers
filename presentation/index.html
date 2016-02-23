@@ -118,14 +118,14 @@ pre > code
       <h2>Why <tt>C</tt> sucks</h2>
       <p>There are many reasons why C sucks but they mostly all boil down
       to the fact that C doesn't have a destructor.</p>
-      <p>C++ has destructors and as a result C++ is way better.</p>
+      <p class="fragment">C++ has destructors and as a result C++ is way better.</p>
     </section>
 
     <section>
       <h2>Destructors</h2>
       <p>If you're not familiar with destructors, they're a function
       that is automatically run when a variable goes out of scope and is
-      to be deleted.</p>
+      about to be deleted.</p>
       <p class="fragment">Even if there is an exception.</p>
       <p class="fragment">This is a very powerful concept.</p>
     </section>
@@ -143,10 +143,22 @@ pre > code
 
     <section>
         <h2>RAII</h2>
-        <p>So what that means is an object aquires a resource when created, and
-        then gives it back when deleted.</p>
-        <p class="fragment">For example, create a database connection and then close the connection.</p>
-        <p class="fragment">Open a file, and then close the file</p>
+        <p>So that means...</p>
+        <p class="fragment">an object aquires a resource when created</p>
+        <p class="fragment">then gives it back when deleted</p>
+    </section>
+
+    <section>
+        <h2>RAII</h2>
+        <p>For example...</p>
+        <p class="fragment">create a database connection and then close the connection</p>
+        <p class="fragment">open a file, and then close the file</p>
+    </section>
+
+    <section>
+        <h2>RAII</h2>
+        <p>It boils down to needing to undo something whenever you do something. A <tt>LIFO</tt> queue
+        or <tt>stack</tt> if you're into compsci terms.</p>
     </section>
 
     <section>
@@ -207,7 +219,7 @@ f.read()
 close(f)
         </code></pre>
 
-      <p class="fragment">It looks a lot like the C version.</p>
+      <p class="fragment">It looks a lot like the <tt>C</tt> version.</p>
     </section>
     
     <section>
@@ -234,6 +246,8 @@ with open("some_file.txt","r") as f:
   # or throw an exception, we don't care
   # close(f) will get called
         </code></pre>
+
+        <p class="fragment">this more or less discombobulates to the previous example</p>
     </section>
 
     <section>
@@ -289,6 +303,7 @@ is locked:  False
         <h2>Behold the awesome might of Context Managers!</h2>
 
         <p class="fragment">function is too big and ugly to fit here</p>
+        <aside class="notes">open ../examples/build_root_fs.py in another window"</aside>
     </section>
 
     <section>
@@ -340,6 +355,9 @@ class custom_ctx_mgr(object):
         """
         </code></pre>
 
+        <aside class="notes">the most important function here is __exit__ and why I was harping
+        on destructors</aside>
+
     </section>
 
     <section>
@@ -348,6 +366,11 @@ class custom_ctx_mgr(object):
         <p class="fragment">To know them is to love them.</p>
         <p class="fragment">To love them is to know them.</p>
     </section>
+
+    <section>
+        <h2>Questions?</h2>
+    </section>
+
     </div><!-- slides -->
 
 </div!-- reveal -->

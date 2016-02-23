@@ -300,13 +300,6 @@ is locked:  False
     </section>
 
     <section>
-        <h2>Behold the awesome might of Context Managers!</h2>
-
-        <p class="fragment">function is too big and ugly to fit here</p>
-        <aside class="notes">open ../examples/build_root_fs.py in another window"</aside>
-    </section>
-
-    <section>
         <h2>You can write your own custom Context Managers</h2>
 
         <p class="fragment">Two methods...</p>
@@ -361,7 +354,51 @@ class custom_ctx_mgr(object):
     </section>
 
     <section>
+        <h2>Invoking a context manager</h2>
+
+        <pre><code data-trim class="language-python">
+with a_ctx_mgr():
+    # do some stuff
+    </code></pre>
+    </section>
+
+    <section>
+        <h2>Invoking a context manager</h2>
+
+        <pre><code data-trim class="language-python">
+with a_ctx_mgr() as var:
+    # do some stuff with var
+        </code></pre>
+
+        <p class="fragment">you can nest them</p>
+
+        <pre class="fragment"><code data-trim class="language-python">
+with a_ctx_mgr() as var:
+    with other_ctx_mgr() as other_var:
+        # do some stuff with var and other_var
+    </code></pre>
+    </section>
+
+    <section>
+        <h2>Invoking a context manager</h2>
+
+        <p>or on the same line</p>
+
+        <pre><code data-trim class="language-python">
+with a_ctx_mgr() as var, with other_ctx_mgr() as other_var:
+    # do some stuff with var and other_var
+    </code></pre>
+    </section>
+
+    <section>
         <h2>Lets look at some examples</h2>
+    </section>
+
+    <section>
+        <h2>Behold the awesome might of Context Managers!</h2>
+
+        <p class="fragment">function is too big and ugly to fit here</p>
+        <aside class="notes">open ../examples/build_root_fs.py in another window"</aside>
     </section>
 
     <section>

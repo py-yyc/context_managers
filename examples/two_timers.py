@@ -1,8 +1,24 @@
 import logging
 import time
-import math
+from contextlib import contextmanager
 
-class Timer(object):
+@contextmanager
+def timer_decorator(prefix=''):
+
+    start =  time.time()
+
+    try:
+        yield ''
+    except Exception as e:
+        logging.warn( "NOT swallowing exception: %s", str(e) )
+        raise
+    finally:
+        delta = time.time() - start
+        print "%s took %f secs" % (prefix, delta)
+        print
+
+
+class timer_class(object):
 
     def __init__(self, prefix=''):
         """
@@ -31,7 +47,7 @@ class Timer(object):
             # we could handle the exception if we knew how
             # here is an example...
             if exc_type is RuntimeError:
-                logging.warn( "swallowing exception: %s\n", str(exc_val) )
+                logging.warn( "swallowing exception: %s", str(exc_val) )
                 return True
 
             return False            # return False to cause caller to re-raise exception
@@ -42,34 +58,3 @@ class Timer(object):
         delta = self._end - self._start
         return "%s took %f secs\n" % (self._prefix, delta)
 
-
-if __name__ == "__main__":
-
-    from humanize import intcomma
-    from lib import slow_fib, fast_fib
-
-    n = 35
-
-    with Timer("slow_fib") as t:
-        f = slow_fib(n)
-        print "slow_fib(%d) -> %s" % ( n, intcomma(f) )
-    print t
-
-    with Timer("fast_fib") as t:
-        f = fast_fib(n)
-        print "fast_fib(%d) -> %s" % ( n, intcomma(f) )
-    print t
-
-    with Timer('RuntimeError'):
-        raise RuntimeError("uh oh")
-
-    #with Timer('KeyError'):
-    #    raise KeyError("uh oh")
-
-    if True:
-        n = 500
-        with Timer("fast_fib") as t:
-            f = fast_fib(n)
-            print "fast_fib(%d) -> %s" % ( n, intcomma(f) )
-            print math.log10(f)
-        print t

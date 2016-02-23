@@ -1,7 +1,7 @@
 import os,sys,re
 import datetime as dt
 from fabric.api import *
-from fabric.context_managers import hide,show
+from fabric.context_managers import hide
 
 env.hosts = ['www']
 env.root_dir = "/home/httpd"
